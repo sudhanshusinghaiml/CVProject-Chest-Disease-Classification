@@ -9,7 +9,7 @@ import yaml
 import joblib
 from ensure import ensure_annotations
 from box import ConfigBox
-from CNNClassifier import logger
+from src.cnn_classifier.logger import logging
 
 
 @ensure_annotations
@@ -30,15 +30,15 @@ def read_yaml(yaml_file_path: Path) -> ConfigBox:
         if get_size(yaml_file_path) != 0:
             with open(yaml_file_path, "rb") as yaml_file:
                 file_content = yaml.safe_load(yaml_file)
-            logger.info("YAML file - %s loaded successfully", yaml_file_path)
+            logging.info("YAML file - %s loaded successfully", yaml_file_path)
         else:
-            logger.error("YAML file - %s is empty", yaml_file_path)
+            logging.error("YAML file - %s is empty", yaml_file_path)
             raise ValueError(f"YAML file {yaml_file_path} is empty")
 
         return ConfigBox(file_content)
 
     except Exception as error:
-        logger.error("Exception in utils.common.read_yaml function \n %s", error)
+        logging.error("Exception in utils.common.read_yaml function \n %s", error)
         raise error
 
 
@@ -54,9 +54,9 @@ def create_directories(directory_list: list, verbose=True):
         for directory in directory_list:
             os.makedirs(directory, exist_ok=True)
             if verbose:
-                logger.info("created directory at: %s", directory)
+                logging.info("created directory at: %s", directory)
     except Exception as error:
-        logger.error(
+        logging.error(
             "Exception in utils.common.create_directories function:\n %s", error
         )
         raise error
@@ -74,9 +74,9 @@ def save_json(json_file_path: Path, data: dict):
         with open(json_file_path, "wb", encoding="utf-8") as json_file:
             json.dump(data, json_file, indent=4)
 
-        logger.info("JSON file saved at: %s ", json_file_path)
+        logging.info("JSON file saved at: %s ", json_file_path)
     except Exception as error:
-        logger.error("Exception in utils.common.save_json function \n %s", error)
+        logging.error("Exception in utils.common.save_json function \n %s", error)
         raise error
 
 
@@ -94,11 +94,11 @@ def load_json(json_file_path: Path) -> ConfigBox:
         with open(json_file_path, "rb") as json_file:
             data = json.load(json_file)
 
-        logger.info("JSON file loaded succesfully from: %s", json_file_path)
+        logging.info("JSON file loaded succesfully from: %s", json_file_path)
 
         return ConfigBox(data)
     except Exception as error:
-        logger.error("Exception in utils.common.load_json function \n %s", error)
+        logging.error("Exception in utils.common.load_json function \n %s", error)
         raise error
 
 
@@ -112,9 +112,9 @@ def save_bin(data: Any, file_path: Path):
     """
     try:
         joblib.dump(value=data, filename=file_path)
-        logger.info("binary file saved at: %s", file_path)
+        logging.info("binary file saved at: %s", file_path)
     except Exception as error:
-        logger.error("Exception in utils.common.save_bin function \n %s", error)
+        logging.error("Exception in utils.common.save_bin function \n %s", error)
         raise error
 
 
@@ -130,10 +130,10 @@ def load_bin(file_path: Path) -> Any:
     """
     try:
         data = joblib.load(file_path)
-        logger.info("Binary file loaded from: %s", file_path)
+        logging.info("Binary file loaded from: %s", file_path)
         return data
     except Exception as error:
-        logger.error("Exception in utils.common.load_bin function \n %s", error)
+        logging.error("Exception in utils.common.load_bin function \n %s", error)
         raise error
 
 
@@ -151,7 +151,7 @@ def get_size(file_path: Path) -> str:
         size_in_kb = round(os.path.getsize(file_path) / 1024)
         return f"~ {size_in_kb} KB"
     except Exception as error:
-        logger.error("Exception in utils.common.get_size function \n %s ", error)
+        logging.error("Exception in utils.common.get_size function \n %s ", error)
         raise error
 
 
@@ -163,7 +163,7 @@ def decode_image(image_string: str, file_name: Path) -> None:
             file.write(imgdata)
             file.close()
     except Exception as error:
-        logger.error("Exception in utils.common.decode_image function \n %s", error)
+        logging.error("Exception in utils.common.decode_image function \n %s", error)
         raise error
 
 
@@ -173,7 +173,7 @@ def encode_image_into_base64(cropped_image_path: Path) -> bytes:
         with open(cropped_image_path, "rb") as file_name:
             return base64.b64encode(file_name.read())
     except Exception as error:
-        logger.error(
+        logging.error(
             "Exception in utils.common.encode_image_into_base64 function \n %s", error
         )
         raise error

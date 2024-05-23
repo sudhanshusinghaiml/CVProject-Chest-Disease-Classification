@@ -2,9 +2,9 @@
 This module contains classes and methods that starts the data ingestion pipeline
 """
 
-from CNNClassifier.config.configuration import ConfigurationManager
-from CNNClassifier.components.data_ingestion import DataIngestion
-from CNNClassifier import logger
+from src.cnn_classifier.config.configuration import ConfigurationManager
+from src.cnn_classifier.components.data_ingestion import DataIngestion
+from src.cnn_classifier.logger import logging
 
 STAGE_NAME = "Data Ingestion stage"
 
@@ -31,10 +31,10 @@ class DataIngestionPipeline:
 
 if __name__ == "__main__":
     try:
-        logger.info(">>>>>> %s started <<<<<<", STAGE_NAME)
+        logging.info(">>>>>> %s started <<<<<<", STAGE_NAME)
         obj = DataIngestionPipeline()
         obj.main()
-        logger.info(">>>>>> %s completed <<<<<<\n\nx==========x", STAGE_NAME)
+        logging.info(">>>>>> %s completed <<<<<<\n\nx==========x", STAGE_NAME)
     except Exception as e:
-        logger.exception(e)
+        logging.exception(e)
         raise e

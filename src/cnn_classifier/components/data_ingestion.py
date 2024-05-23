@@ -3,8 +3,8 @@
 import os
 import zipfile
 import gdown
-from CNNClassifier import logger
-from CNNClassifier.entity.config_entity import DataIngestionConfig
+from src.cnn_classifier.logger import logging
+from src.cnn_classifier.entity.config_entity import DataIngestionConfig
 
 
 class DataIngestion:
@@ -24,17 +24,18 @@ class DataIngestion:
             zipped_file = self.config.downloaded_data_file
             os.makedirs(self.config.root_directory, exist_ok=True)
             file_id = dataset_url.split("/")[-2]
-            logger.info(
+            logging.info(
                 "Started Downloading data from %s into %s", dataset_url, zipped_file
             )
             url = f"https://drive.google.com/uc?id={file_id}"
             gdown.download(url, zipped_file)
-            logger.info(
+            logging.info(
                 "Successfully downloaded data from %s into file %s",
                 dataset_url,
                 zipped_file,
             )
         except Exception as error:
+            logging.error(error)
             raise error
 
     def extract_zip_file(self):
@@ -46,10 +47,11 @@ class DataIngestion:
             os.makedirs(unzip_file_path, exist_ok=True)
             with zipfile.ZipFile(self.config.downloaded_data_file, "r") as zip_file:
                 zip_file.extractall(unzip_file_path)
-            logger.info(
+            logging.info(
                 "Unzipped file from %s to file %s",
                 self.config.downloaded_data_file,
                 unzip_file_path,
             )
         except Exception as error:
+            logging.error(error)
             raise error
