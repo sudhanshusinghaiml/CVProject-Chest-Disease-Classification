@@ -16,7 +16,7 @@ prepare_model:
 model_training:
   root_directory: artifacts/model_training
   trained_model_path: artifacts/model_training/model.h5
-  mlflow_uri: https://dagshub.com/sudhanshusinghaiml/MLFlow-with-Dagshub-Experiment.mlflow
+  mlflow_uri: https://dagshub.com/sudhanshusinghaiml/CVProject-Chest-Disease-Classification.mlflow
 
 
 prediction:
