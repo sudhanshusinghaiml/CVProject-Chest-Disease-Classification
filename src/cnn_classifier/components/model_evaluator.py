@@ -66,7 +66,7 @@ class ModelEvaluation:
 
     def log_into_mlflow(self):
         """This method registers the model scores and parametes into ML Flow"""
-        mlflow.set_registry_uri(self.config.model_training.mlflow_uri)
+        mlflow.set_registry_uri(self.config.mlflow_uri)
         tracking_url_type_store = urlparse(mlflow.get_tracking_uri()).scheme
 
         with mlflow.start_run():

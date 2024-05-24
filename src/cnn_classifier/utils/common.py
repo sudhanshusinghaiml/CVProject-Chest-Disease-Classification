@@ -71,7 +71,7 @@ def save_json(json_file_path: Path, data: dict):
         data (dict): data to be saved in json file
     """
     try:
-        with open(json_file_path, "wb", encoding="utf-8") as json_file:
+        with open(json_file_path, "w", encoding="utf-8") as json_file:
             json.dump(data, json_file, indent=4)
 
         logging.info("JSON file saved at: %s ", json_file_path)

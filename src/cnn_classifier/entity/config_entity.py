@@ -72,6 +72,10 @@ class ModelEvaluationConfig:
     mlflow_uri: str
     params_image_size: list
     params_batch_size: int
+    params_validation_split: float
+    params_shuffle: bool
+    params_validation_subset: str
+    params_interpolation: str
 
 
 @dataclass(frozen=True)

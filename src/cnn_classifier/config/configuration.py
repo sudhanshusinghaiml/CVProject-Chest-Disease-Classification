@@ -100,11 +100,15 @@ class ConfigurationManager:
 
         model_evaluation_config = ModelEvaluationConfig(
             path_of_model=self.config.model_training.trained_model_path,
-            training_data=self.config.data_ingestion.downloaded_data_file,
+            training_data=self.config.data_ingestion.unzip_directory,
             all_params=self.params,
             mlflow_uri=self.config.model_training.mlflow_uri,
             params_image_size=self.params.IMAGE_SIZE,
             params_batch_size=self.params.BATCH_SIZE,
+            params_validation_split=self.params.VALIDATION_SPLIT,
+            params_shuffle=self.params.SHUFFLE,
+            params_validation_subset=self.params.VALIDATION_SUBSET,
+            params_interpolation=self.params.INTERPOLATION,
         )
 
         return model_evaluation_config
