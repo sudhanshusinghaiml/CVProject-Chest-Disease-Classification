@@ -40,9 +40,9 @@ stages:
 
 
   model_evaluation:
-    cmd: python src/cnn_classifier/pipeline/model_training_pipeline.py
+    cmd: python src/cnn_classifier/pipeline/model_evaluation_pipeline.py
     deps:
-      - src/cnn_classifier/pipeline/model_training_pipeline.py
+      - src/cnn_classifier/pipeline/model_evaluation_pipeline.py
       - config/config.yaml
       - artifacts/data_ingestion/Chest-CT-Scan-data
       - artifacts/model_training/model.h5

@@ -8,7 +8,7 @@ Computer Vision - Chest Disease Classification from CT Scan Images
 3. Update the entity - config_entity.py
 4. Update the configuration manager in src config - configuration.py
 5. Update the components
-6. Update the pipeline 
+6. Update the pipeline
 7. Update the main.py/app.py
 8. Update the dvc.yaml
 
@@ -62,3 +62,30 @@ export MLFLOW_TRACKING_PASSWORD=<password>
 
 python script.py
 ```
+
+
+## DVC commands
+
+```bash
+dvc init
+```
+
+```bash
+dvc repro
+```
+
+```bash
+dvc dag
+```
+
+To track the changes with git, run:
+```bash
+git add dvc.lock
+```
+
+To enable auto staging, run:
+```bash
+dvc config core.autostage true
+```
+
+Use `dvc push` to send your updates to remote storage.
