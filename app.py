@@ -29,7 +29,7 @@ class ImagePredictor:
 
 
 # 3. Routing to Home Page of "Chest Disease Classification App"
-#    (http://127.0.0.1:8000/)
+#    (http://127.0.0.1:8080/)
 @ChestDiseaseClassificationApp.route("/", methods=["GET"])
 @cross_origin()
 def home():
@@ -38,7 +38,7 @@ def home():
 
 
 # 3. Expose the Model Training functionality with new set of Data
-#    (http://127.0.0.1:8000/train)
+#    (http://127.0.0.1:8080/train)
 @ChestDiseaseClassificationApp.route("/train", methods=["GET", "POST"])
 @cross_origin()
 def train_route():
@@ -50,7 +50,7 @@ def train_route():
 
 # 4. Expose the prediction functionality, make a prediction from the passed
 #    JSON data and return the predicted result
-#    (http://127.0.0.1:8000/predict)
+#    (http://127.0.0.1:8080/predict)
 @ChestDiseaseClassificationApp.route("/predict", methods=["POST"])
 @cross_origin()
 def predict_route():
@@ -62,13 +62,8 @@ def predict_route():
     return jsonify(result)
 
 
-# if __name__ == "__main__":
-#     clApp = ClientApp()
-#     app.run(host='0.0.0.0', port=8080)
-
-# 5. Run the API with uvicorn
-#    Will run on http://127.0.0.1:8000
+# 5. Run the API with gunicorn
+#    Will run on http://127.0.0.1:8080
 if __name__ == "__main__":
-    # classify = ImagePredictor()
     ChestDiseaseClassificationApp.run(host="0.0.0.0", port=8080, debug=True)
     ChestDiseaseClassificationApp.config["TEMPLATES_AUTO_RELOAD"] = True

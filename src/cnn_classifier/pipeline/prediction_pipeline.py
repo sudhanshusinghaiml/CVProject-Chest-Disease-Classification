@@ -40,11 +40,15 @@ class PredictionPipeline:
         loaded_image_array = tf.keras.preprocessing.image.img_to_array(loaded_image)
         logging.info("Loaded image array for prediction", loaded_image_array)
 
-        image_array = np.expand_dims(loaded_image_array, axis=0)
-        logging.info("Expanded image array for prediction", loaded_image_array)
+        image_array = np.expand_dims(loaded_image_array / 255, axis=0)
+        logging.info("Expanded image array for prediction", image_array)
 
-        result = np.argmax(model.predict(image_array), axis=1)
-        logging.info("Getting result from model:", result)
+        predicted_output = model.predict(image_array)
+        logging.info("Predicted Probabilities of Image are", predicted_output)
+
+        result = np.argmax(predicted_output, axis=1)
+        logging.info("Getting result[0] from model:", result[0])
+        # logging.info("Getting result[1] from model:", result[1])
 
         if result[0] == 1:
             prediction = "Normal"
