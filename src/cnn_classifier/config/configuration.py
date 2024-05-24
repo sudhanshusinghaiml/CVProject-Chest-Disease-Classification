@@ -3,7 +3,6 @@ This is the configuration manager for all the stages of pipelines for this Proje
 It will have all the configuration methods encapsulated in a class
 """
 
-import os
 from pathlib import Path
 from src.cnn_classifier.constants import CONFIG_FILE_PATH, PARAMS_FILE_PATH
 from src.cnn_classifier.utils.common import read_yaml, create_directories
@@ -68,9 +67,7 @@ class ConfigurationManager:
         """
         config = self.config.model_training
         prepare_model_config = self.config.prepare_model
-        training_data = os.path.join(
-            self.config.data_ingestion.unzip_dir, "training_data"
-        )
+        training_data = self.config.data_ingestion.unzip_directory
 
         create_directories([Path(config.root_directory)])
 

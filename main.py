@@ -8,6 +8,7 @@ from src.cnn_classifier.pipeline.prepare_model_pipeline import (
     PrepareModelArchitecturePipeline,
 )
 from src.cnn_classifier.pipeline.model_training_pipeline import ModelTrainingPipeline
+
 from src.cnn_classifier.pipeline.model_evaluation_pipeline import (
     ModelEvaluationPipeline,
 )
@@ -38,6 +39,7 @@ except Exception as error:
 
 
 STAGE_NAME = "Model Training Pipeline"
+
 try:
     logging.info(">>>>>> Started %s <<<<<<", STAGE_NAME)
     model_trainer_object = ModelTrainingPipeline()
@@ -49,6 +51,7 @@ except Exception as error:
 
 
 STAGE_NAME = "Model Evaluation Pipeline"
+
 try:
     logging.info(">>>>>> Started %s <<<<<<", STAGE_NAME)
     model_evaluation_object = ModelEvaluationPipeline()
