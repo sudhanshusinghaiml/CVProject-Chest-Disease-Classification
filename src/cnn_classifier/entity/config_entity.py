@@ -31,3 +31,30 @@ class PrepareModelArchitectureConfig:
     params_include_top: bool
     params_weights: str
     params_classes: int
+
+
+@dataclass(frozen=True)
+class ModelTrainingConfig:
+    """
+    This class encapsulates the variables associated with Model Training
+    """
+
+    root_directory: Path
+    trained_model_path: Path
+    updated_model_path: Path
+    training_data: Path
+    params_epochs: int
+    params_batch_size: int
+    params_augmentation_required: bool
+    params_image_size: list
+    params_validation_split: float
+    params_interpolation: str
+    params_rotation_range: int
+    params_horizontal_flip: bool
+    params_width_shift_range: float
+    params_height_shift_range: float
+    params_shear_range: float
+    params_zoom_range: float
+    params_shuffle: bool
+    params_validation_subset: str
+    params_training_subset: str

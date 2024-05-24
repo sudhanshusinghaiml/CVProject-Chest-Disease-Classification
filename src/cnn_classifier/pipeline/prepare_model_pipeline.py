@@ -22,32 +22,32 @@ class PrepareModelArchitecturePipeline:
         This method triggers all the functions from PrepareModel class
         """
         logging.info(
-            "Inside src.CNNClassifier.components.pipeline.PrepareModelArchitecturePipeline"
+            "Inside src.cnn_classifier.components.pipeline.PrepareModelArchitecturePipeline"
         )
         config = ConfigurationManager()
         prepare_model_config = config.get_model_config()
         logging.info(
             "Completed execution get_model_config method of \
-                src.CNNClassifier.config.configuration.ConfigurationManager "
+                src.cnn_classifier.config.configuration.ConfigurationManager "
         )
         logging.info(
             "Started execution of \
-            src.CNNClassifier.components.prepare_model.PrepareModelArchitecture "
+            src.cnn_classifier.components.prepare_model.PrepareModelArchitecture "
         )
         prepare_model = PrepareModelArchitecture(config=prepare_model_config)
         prepare_model.get_base_model()
         logging.info(
             "Completed execution get_base_model method of \
-                src.CNNClassifier.components.prepare_model.PrepareModelArchitecture"
+                src.cnn_classifier.components.prepare_model.PrepareModelArchitecture"
         )
         prepare_model.update_model()
         logging.info(
             "Saving the model - completed execution update_model method of \
-                src.CNNClassifier.components.prepare_model.PrepareModelArchitecture"
+                src.cnn_classifier.components.prepare_model.PrepareModelArchitecture"
         )
         logging.info(
             "Completed execution of \
-                src.CNNClassifier.components.prepare_model.PrepareModelArchitecture"
+                src.cnn_classifier.components.prepare_model.PrepareModelArchitecture"
         )
 
 
@@ -57,7 +57,7 @@ if __name__ == "__main__":
         logging.info(">>>>>> Started %s <<<<<<", STAGE_NAME)
         obj = PrepareModelArchitecturePipeline()
         obj.main()
-        logging.info(">>>>>> %s completed <<<<<<\n\nx==========x", STAGE_NAME)
+        logging.info(">>>>>> %s completed <<<<<<\n\n", STAGE_NAME)
     except Exception as error:
         logging.exception(error)
         raise error

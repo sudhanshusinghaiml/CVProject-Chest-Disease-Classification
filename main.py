@@ -7,6 +7,7 @@ from src.cnn_classifier.pipeline.data_ingestion_pipeline import DataIngestionPip
 from src.cnn_classifier.pipeline.prepare_model_pipeline import (
     PrepareModelArchitecturePipeline,
 )
+from src.cnn_classifier.pipeline.model_training_pipeline import ModelTrainingPipeline
 
 STAGE_NAME = "Data Ingestion stage"
 
@@ -27,6 +28,17 @@ try:
     model_architecture_obj = PrepareModelArchitecturePipeline()
     model_architecture_obj.main()
     logging.info(">>>>>> %s completed <<<<<<\n\nx==========x", STAGE_NAME)
+except Exception as error:
+    logging.exception(error)
+    raise error
+
+
+STAGE_NAME = "Training"
+try:
+    logging.info(">>>>>> Started %s <<<<<<", STAGE_NAME)
+    model_trainer_object = ModelTrainingPipeline()
+    model_trainer_object.main()
+    logging.info(f">>>>>> stage {STAGE_NAME} completed <<<<<<\n\nx==========x")
 except Exception as error:
     logging.exception(error)
     raise error

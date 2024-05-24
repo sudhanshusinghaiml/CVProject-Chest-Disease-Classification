@@ -3,12 +3,14 @@ This is the configuration manager for all the stages of pipelines for this Proje
 It will have all the configuration methods encapsulated in a class
 """
 
+import os
 from pathlib import Path
 from src.cnn_classifier.constants import CONFIG_FILE_PATH, PARAMS_FILE_PATH
 from src.cnn_classifier.utils.common import read_yaml, create_directories
 from src.cnn_classifier.entity.config_entity import (
     DataIngestionConfig,
     PrepareModelArchitectureConfig,
+    ModelTrainingConfig,
 )
 
 
@@ -57,3 +59,39 @@ class ConfigurationManager:
         )
 
         return prepare_model_config
+
+    def get_model_training_config(self) -> ModelTrainingConfig:
+        """
+        This method is to fetch the config details for Model Training
+        """
+        config = self.config.model_training
+        prepare_model_config = self.config.prepare_model
+        training_data = os.path.join(
+            self.config.data_ingestion.unzip_dir, "training_data"
+        )
+
+        create_directories([Path(config.root_directory)])
+
+        model_training_config = ModelTrainingConfig(
+            root_directory=Path(config.root_directory),
+            trained_model_path=Path(config.trained_model_path),
+            updated_model_path=Path(prepare_model_config.updated_model_path),
+            training_data=Path(training_data),
+            params_epochs=self.params.EPOCHS,
+            params_batch_size=self.params.BATCH_SIZE,
+            params_augmentation_required=self.params.AUGMENTATION,
+            params_image_size=self.params.IMAGE_SIZE,
+            params_validation_split=self.params.VALIDATION_SPLIT,
+            params_interpolation=self.params.INTERPOLATION,
+            params_rotation_range=self.params.ROTATION_RANGE,
+            params_horizontal_flip=self.params.HORIZONTAL_FLIP,
+            params_width_shift_range=self.params.WIDTH_SHIFT_RANGE,
+            params_height_shift_range=self.params.HEIGHT_SHIFT_RANGE,
+            params_shear_range=self.params.SHEAR_RANGE,
+            params_zoom_range=self.params.ZOOM_RANGE,
+            params_shuffle=self.params.SHUFFLE,
+            params_validation_subset=self.params.VALIDATION_SUBSET,
+            params_training_subset=self.params.TRAINING_SUBSET,
+        )
+
+        return model_training_config

@@ -12,3 +12,7 @@ prepare_model:
   root_directory: artifacts/prepare_model
   model_path: artifacts/prepare_model/model.h5
   updated_model_path: artifacts/prepare_model/model_updated.h5
+
+model_training:
+  root_directory: artifacts/model_training
+  trained_model_path: artifacts/model_training/model.h5
