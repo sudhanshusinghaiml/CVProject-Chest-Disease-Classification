@@ -10,9 +10,10 @@ data_ingestion:
 
 prepare_model:
   root_directory: artifacts/prepare_model
-  model_path: artifacts/prepare_model/model.h5
+  model_path: artifacts/prepare_model/downloaded_model.h5
   updated_model_path: artifacts/prepare_model/model_updated.h5
 
 model_training:
   root_directory: artifacts/model_training
   trained_model_path: artifacts/model_training/model.h5
+  mlflow_uri: https://dagshub.com/sudhanshusinghaiml/MLFlow-with-Dagshub-Experiment.mlflow

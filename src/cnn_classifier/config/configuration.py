@@ -11,6 +11,7 @@ from src.cnn_classifier.entity.config_entity import (
     DataIngestionConfig,
     PrepareModelArchitectureConfig,
     ModelTrainingConfig,
+    ModelEvaluationConfig,
 )
 
 
@@ -95,3 +96,17 @@ class ConfigurationManager:
         )
 
         return model_training_config
+
+    def get_model_evaluation_config(self) -> ModelEvaluationConfig:
+        """This method is to fetch the config details for Model Evaluation"""
+
+        model_evaluation_config = ModelEvaluationConfig(
+            path_of_model=self.config.model_training.trained_model_path,
+            training_data=self.config.data_ingestion.downloaded_data_file,
+            all_params=self.params,
+            mlflow_uri=self.config.model_training.mlflow_uri,
+            params_image_size=self.params.IMAGE_SIZE,
+            params_batch_size=self.params.BATCH_SIZE,
+        )
+
+        return model_evaluation_config

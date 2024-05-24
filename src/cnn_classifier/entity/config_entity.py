@@ -58,3 +58,17 @@ class ModelTrainingConfig:
     params_shuffle: bool
     params_validation_subset: str
     params_training_subset: str
+
+
+@dataclass(frozen=True)
+class ModelEvaluationConfig:
+    """
+    This class encapsulates the variables associated with Model Evaluation
+    """
+
+    path_of_model: Path
+    training_data: Path
+    all_params: dict
+    mlflow_uri: str
+    params_image_size: list
+    params_batch_size: int

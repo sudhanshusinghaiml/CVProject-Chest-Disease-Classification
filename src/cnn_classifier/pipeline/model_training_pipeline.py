@@ -4,7 +4,7 @@ from src.cnn_classifier.components.model_trainer import ModelTraining
 from src.cnn_classifier.config.configuration import ConfigurationManager
 from src.cnn_classifier.logger import logging
 
-STAGE_NAME = "Model Training on Custom Data"
+STAGE_NAME = "Model Training Pipeline"
 
 
 class ModelTrainingPipeline:
@@ -52,7 +52,7 @@ if __name__ == "__main__":
         logging.info(">>>>>> Started %s <<<<<<", STAGE_NAME)
         obj = ModelTrainingPipeline()
         obj.main()
-        logging.info(">>>>>> %s completed <<<<<<\n\nx==========x", STAGE_NAME)
+        logging.info(">>>>>> %s completed <<<<<<\n\n", STAGE_NAME)
     except Exception as error:
         logging.exception(error)
         raise error

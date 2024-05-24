@@ -8,8 +8,12 @@ from src.cnn_classifier.pipeline.prepare_model_pipeline import (
     PrepareModelArchitecturePipeline,
 )
 from src.cnn_classifier.pipeline.model_training_pipeline import ModelTrainingPipeline
+from src.cnn_classifier.pipeline.model_evaluation_pipeline import (
+    ModelEvaluationPipeline,
+)
 
-STAGE_NAME = "Data Ingestion stage"
+
+STAGE_NAME = "Data Ingestion Pipeline"
 
 try:
     logging.info(">>>>>> %s started <<<<<<", STAGE_NAME)
@@ -33,12 +37,23 @@ except Exception as error:
     raise error
 
 
-STAGE_NAME = "Training"
+STAGE_NAME = "Model Training Pipeline"
 try:
     logging.info(">>>>>> Started %s <<<<<<", STAGE_NAME)
     model_trainer_object = ModelTrainingPipeline()
     model_trainer_object.main()
-    logging.info(f">>>>>> stage {STAGE_NAME} completed <<<<<<\n\nx==========x")
+    logging.info(">>>>>> stage %s completed <<<<<<\n\n", STAGE_NAME)
+except Exception as error:
+    logging.exception(error)
+    raise error
+
+
+STAGE_NAME = "Model Evaluation Pipeline"
+try:
+    logging.info(">>>>>> Started %s <<<<<<", STAGE_NAME)
+    model_evaluation_object = ModelEvaluationPipeline()
+    model_evaluation_object.main()
+    logging.info(">>>>>> stage %s completed <<<<<<\n\n", STAGE_NAME)
 except Exception as error:
     logging.exception(error)
     raise error
