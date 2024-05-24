@@ -140,8 +140,16 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+.mypy_cache/*
 .dmypy.json
 dmypy.json
+
+# ruff
+.ruff_cache/*
+
+
+# logs
+**/logs/*
 
 # Pyre type checker
 .pyre/
@@ -161,4 +169,3 @@ cython_debug/
 **/data/*
 **/artifacts/*
 experiments/chest_disease_dataset.zip
-.pylintrc
