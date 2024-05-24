@@ -12,6 +12,7 @@ from src.cnn_classifier.entity.config_entity import (
     PrepareModelArchitectureConfig,
     ModelTrainingConfig,
     ModelEvaluationConfig,
+    PredictionPipelineConfig,
 )
 
 
@@ -110,3 +111,13 @@ class ConfigurationManager:
         )
 
         return model_evaluation_config
+
+    def get_prediction_config(self) -> PredictionPipelineConfig:
+        """This method is to fetch the config details for Model Evaluation"""
+
+        prediction_pipeline_config = PredictionPipelineConfig(
+            model_path=self.config.model_training.trained_model_path,
+            params_image_size=self.params.IMAGE_SIZE,
+        )
+
+        return prediction_pipeline_config

@@ -72,3 +72,13 @@ class ModelEvaluationConfig:
     mlflow_uri: str
     params_image_size: list
     params_batch_size: int
+
+
+@dataclass(frozen=True)
+class PredictionPipelineConfig:
+    """
+    This class encapsulates the variables associated with Prediction Pipeline
+    """
+
+    model_path: Path
+    params_image_size: list
