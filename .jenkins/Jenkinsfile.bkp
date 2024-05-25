@@ -1,0 +1,86 @@
+pipeline {
+    agent any
+
+    environment {
+		ECR_REPOSITORY = credentials('ECR_REPOSITORY')
+		AWS_ACCOUNT_ID = credentials('AWS_ACCOUNT_ID')
+		AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
+		AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
+    }
+
+    stages {
+        // stage('Static Code Analysis') {
+        //     steps {
+        //         echo 'Scanning Python code using static code analysis...'
+        //         sh 'flake8 --max-line-length=120 .'
+		// 		echo 'Scanning Python code - Completed'
+        //     }
+        // }
+
+        stage('Scan for Large Files') {
+            steps {
+                echo 'Scanning repository for large files...'
+                sh 'find . -type f -size +50M'
+				echo 'Scanning repository for large files - Completed'
+            }
+        }
+
+        // stage('Scan for Credentials') {
+        //     steps {
+        //         echo 'Scanning files for credentials...'
+        //         sh 'trufflehog --regex --entropy=True .'
+		// 		echo 'Scanning files for credentials - Completed'
+        //     }
+        // }
+
+        stage('Login to ECR') {
+            steps {
+                echo 'Logging in to Amazon ECR...'
+				script {
+					sh 'aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com'
+                }
+				echo 'Logging in to Amazon ECR - Completed'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                echo 'Building Docker image...'
+                sh 'docker build -t $ECR_REPOSITORY .'
+                sh 'docker tag $ECR_REPOSITORY:latest $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$ECR_REPOSITORY:latest'
+				echo 'Building Docker image - Completed'
+            }
+        }
+
+        stage('Push Docker Image') {
+            steps {
+                echo 'Pushing Docker image to ECR...'
+                sh 'docker push $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$ECR_REPOSITORY:latest'
+				echo 'Pushing Docker image - Completed'
+            }
+        }
+
+        stage('Continuous Deployment') {
+            steps {
+                echo 'Deploying to EC2 instance...'
+                sshagent(['ec2-ssh-key']) {
+                    sh 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ubuntu@3.86.37.143'
+                    sh 'cd /home/ubuntu/'
+                    sh 'wget https://github.com/sudhanshusinghaiml/CVProject-Chest-Disease-Classification/blob/develop/docker-compose.yaml'
+                    sh 'export IMAGE_NAME=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$ECR_REPOSITORY:latest'
+                    sh 'aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com'
+                    sh 'docker compose up -d'
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Pipeline executed successfully!'
+        }
+        failure {
+            echo 'Pipeline execution failed!'
+        }
+    }
+}

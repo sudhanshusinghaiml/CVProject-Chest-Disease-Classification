@@ -9,14 +9,6 @@ pipeline {
     }
 
     stages {
-        // stage('Static Code Analysis') {
-        //     steps {
-        //         echo 'Scanning Python code using static code analysis...'
-        //         sh 'flake8 --max-line-length=120 .'
-		// 		echo 'Scanning Python code - Completed'
-        //     }
-        // }
-
         stage('Scan for Large Files') {
             steps {
                 echo 'Scanning repository for large files...'
@@ -24,14 +16,6 @@ pipeline {
 				echo 'Scanning repository for large files - Completed'
             }
         }
-
-        // stage('Scan for Credentials') {
-        //     steps {
-        //         echo 'Scanning files for credentials...'
-        //         sh 'trufflehog --regex --entropy=True .'
-		// 		echo 'Scanning files for credentials - Completed'
-        //     }
-        // }
 
         stage('Login to ECR') {
             steps {
@@ -60,19 +44,57 @@ pipeline {
             }
         }
 
+        // stage('Continuous Deployment') {
+        //     steps {
+        //         echo 'Deploying to EC2 instance...'
+        //         sshagent(['ec2-ssh-key']) {
+        //             sh 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ubuntu@3.86.37.143'
+        //             sh 'cd /home/ubuntu/'
+        //             sh 'wget https://github.com/sudhanshusinghaiml/CVProject-Chest-Disease-Classification/blob/develop/docker-compose.yaml'
+        //             sh 'export IMAGE_NAME=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$ECR_REPOSITORY:latest'
+        //             sh 'aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com'
+        //             sh 'docker compose up -d'
+        //         }
+        //     }
+        // }
+
         stage('Continuous Deployment') {
             steps {
-                echo 'Deploying to EC2 instance...'
-                sshagent(['ec2-ssh-key']) {
-                    sh """
-                    ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ubuntu@3.86.37.143 <<EOF
-                    cd /home/ubuntu/
-                    wget https://github.com/sudhanshusinghaiml/CVProject-Chest-Disease-Classification/blob/develop/docker-compose.yaml
-                    export IMAGE_NAME=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$ECR_REPOSITORY:latest
-                    aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com
-                    docker compose up -d
-                    EOF
-                    """
+                sshagent(['ssh_key']) {
+                    script {
+                        // Define variables
+                        def remoteUser = 'ubuntu'
+                        def remoteHost = 'ec2-3-86-37-143.compute-1.amazonaws.com'
+                        def remoteDir = '/home/ubuntu/'
+                        def dockerComposeUrl = 'https://raw.githubusercontent.com/sudhanshusinghaiml/CVProject-Chest-Disease-Classification/develop/docker-compose.yaml'
+                        def imageName = "$ECR_REPOSITORY:latest"
+                        def awsRegion = 'us-east-1'
+                        def ecrUrl = "$AWS_ACCOUNT_ID.dkr.ecr.${awsRegion}.amazonaws.com"
+
+                        // Debugging: Print variables
+                        echo "Connecting to ${remoteUser}@${remoteHost}"
+                        echo "Remote Directory: ${remoteDir}"
+                        echo "Docker Compose URL: ${dockerComposeUrl}"
+                        echo "Image Name: ${imageName}"
+                        echo "ECR URL: ${ecrUrl}"
+
+                        // Execute remote commands with debugging
+                        try {
+                            sh """
+                            ssh -v -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ${remoteUser}@${remoteHost} << EOF
+                            set -x
+                            cd ${remoteDir}
+                            wget ${dockerComposeUrl} -O docker-compose.yml
+                            export IMAGE_NAME=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/${imageName}
+                            aws ecr get-login-password --region ${awsRegion} | docker login --username AWS --password-stdin ${ecrUrl}
+                            docker compose up -d
+                            set +x
+                            EOF
+                            """
+                        } catch (Exception e) {
+                            error("Deployment failed: ${e.message}")
+                        }
+                    }
                 }
             }
         }
