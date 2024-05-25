@@ -14,12 +14,6 @@ ENV PYTHONDONTWRITEBYTECODE=1
 # the application crashes without emitting any logs due to buffering.
 ENV PYTHONUNBUFFERED=1
 
-# MLFLOW Credentials Setup
-ENV MLFLOW_TRACKING_URI=https://dagshub.com/sudhanshusinghaiml/CVProject-Chest-Disease-Classification.mlflow
-ENV MLFLOW_TRACKING_USERNAME=sudhanshusinghaiml
-ENV MLFLOW_TRACKING_PASSWORD=1bd48be2e5cad1ff1b40daf36fdaedd85eb25e72
-
-#Setting up Working directory
 WORKDIR /app
 
 # Copy the source code into the container.
@@ -38,4 +32,4 @@ RUN dvc init --no-scm
 EXPOSE 8080
 
 # Run the application.
-CMD gunicorn app:ChestDiseaseClassificationApp --workers=2 --threads=4 --worker-class=gthread -b 0.0.0.0:8080
+CMD ["gunicorn", "app:ChestDiseaseClassificationApp", "--workers", "2", "--threads", "2", "--worker-class", "gthread"]
