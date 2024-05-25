@@ -18,12 +18,11 @@ ENV PYTHONUNBUFFERED=1
 
 WORKDIR /app
 
-
 # Copy the source code into the container.
-COPY . .
+COPY . /app/
 
 # Expose the port that the application listens on.
 EXPOSE 8080
 
 # Run the application.
-CMD gunicorn 'myapp.example:app' --bind=0.0.0.0:8080
+CMD ["gunicorn", "app:ChestDiseaseClassificationApp", "--workers", "2", "--threads", "4", "--worker-class", "gthread" ,"--host", "0.0.0.0", "--port", "8080"]
