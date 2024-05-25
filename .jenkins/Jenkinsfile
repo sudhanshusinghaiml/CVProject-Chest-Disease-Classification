@@ -46,7 +46,8 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 echo 'Building Docker image...'
-                sh 'docker build -t $ECR_REPOSITORY:latest .'
+                sh 'docker build -t $ECR_REPOSITORY .'
+                sh 'docker tag $ECR_REPOSITORY:latest $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$ECR_REPOSITORY:latest'
 				echo 'Building Docker image - Completed'
             }
         }
@@ -54,7 +55,7 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 echo 'Pushing Docker image to ECR...'
-                sh 'docker push $ECR_REPOSITORY:latest'
+                sh 'docker push $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$ECR_REPOSITORY:latest'
 				echo 'Pushing Docker image - Completed'
             }
         }
