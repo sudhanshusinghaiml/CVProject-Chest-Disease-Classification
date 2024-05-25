@@ -1,5 +1,3 @@
-# syntax=docker/dockerfile:1
-
 # Comments are provided throughout this file to help you get started.
 # If you need more help, visit the Dockerfile reference guide at
 # https://docs.docker.com/go/dockerfile-reference/
@@ -19,10 +17,19 @@ ENV PYTHONUNBUFFERED=1
 WORKDIR /app
 
 # Copy the source code into the container.
-COPY . /app/
+COPY . /app
+
+# To signify root directory of application
+RUN touch /app/.project-root
+
+# Run requirements.txt to install all dependencies
+RUN pip install -r requirements.txt
+
+# Initializing dvc
+RUN dvc init --no-scm
 
 # Expose the port that the application listens on.
 EXPOSE 8080
 
 # Run the application.
-CMD ["gunicorn", "app:ChestDiseaseClassificationApp", "--workers", "2", "--threads", "4", "--worker-class", "gthread" ,"--host", "0.0.0.0", "--port", "8080"]
+CMD ["gunicorn", "app:ChestDiseaseClassificationApp", "--workers", "2", "--threads", "2", "--worker-class", "gthread"]
