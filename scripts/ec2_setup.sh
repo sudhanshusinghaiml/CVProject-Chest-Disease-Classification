@@ -1,8 +1,8 @@
 #!bin/bash
 
-sudo apt update 
+sudo apt update
 
-sudo apt-get update 
+sudo apt-get update
 
 sudo apt upgrade -y
 
@@ -14,7 +14,11 @@ sudo usermod -aG docker $USER
 
 newgrp docker
 
-sudo apt install awscli -y
+## Installing AWSCLI
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+sudo apt install zip -y
+unzip awscliv2.zip
+sudo ./aws/install --bin-dir /usr/local/bin --install-dir /usr/local/aws-cli --update
 
 
 
