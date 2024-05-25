@@ -14,6 +14,12 @@ ENV PYTHONDONTWRITEBYTECODE=1
 # the application crashes without emitting any logs due to buffering.
 ENV PYTHONUNBUFFERED=1
 
+# Setting up MLFlow Environment Variables
+ENV MLFLOW_TRACKING_URI=https://dagshub.com/sudhanshusinghaiml/CVProject-Chest-Disease-Classification.mlflow
+ENV MLFLOW_TRACKING_USERNAME=sudhanshusinghaiml
+ENV MLFLOW_TRACKING_PASSWORD=<password>
+
+# Setting up Working directory
 WORKDIR /app
 
 # Copy the source code into the container.
