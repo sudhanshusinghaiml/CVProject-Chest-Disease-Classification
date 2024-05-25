@@ -46,7 +46,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 echo 'Building Docker image...'
-                sh 'docker build -t $ECR_REPOSITORY .'
+                sh 'docker build -t $ECR_REPOSITORY:latest .'
 				echo 'Building Docker image - Completed'
             }
         }
@@ -54,7 +54,7 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 echo 'Pushing Docker image to ECR...'
-                sh 'docker push $ECR_REPOSITORY'
+                sh 'docker push $ECR_REPOSITORY:latest'
 				echo 'Pushing Docker image - Completed'
             }
         }
