@@ -60,7 +60,7 @@ pipeline {
 
         stage('Continuous Deployment') {
             steps {
-                sshagent(['ssh_key']) {
+                sshagent(['ec2-ssh-key']) {
                     script {
                         // Define variables
                         def remoteUser = 'ubuntu'
