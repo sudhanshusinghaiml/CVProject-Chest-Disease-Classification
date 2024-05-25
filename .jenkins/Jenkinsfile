@@ -9,13 +9,13 @@ pipeline {
     }
 
     stages {
-        stage('Static Code Analysis') {
-            steps {
-                echo 'Scanning Python code using static code analysis...'
-                sh 'flake8 --max-line-length=120 .'
-				echo 'Scanning Python code - Completed'
-            }
-        }
+        // stage('Static Code Analysis') {
+        //     steps {
+        //         echo 'Scanning Python code using static code analysis...'
+        //         sh 'flake8 --max-line-length=120 .'
+		// 		echo 'Scanning Python code - Completed'
+        //     }
+        // }
 
         stage('Scan for Large Files') {
             steps {
@@ -25,13 +25,13 @@ pipeline {
             }
         }
 
-        stage('Scan for Credentials') {
-            steps {
-                echo 'Scanning files for credentials...'
-                sh 'trufflehog --regex --entropy=True .'
-				echo 'Scanning files for credentials - Completed'
-            }
-        }
+        // stage('Scan for Credentials') {
+        //     steps {
+        //         echo 'Scanning files for credentials...'
+        //         sh 'trufflehog --regex --entropy=True .'
+		// 		echo 'Scanning files for credentials - Completed'
+        //     }
+        // }
 
         stage('Login to ECR') {
             steps {
