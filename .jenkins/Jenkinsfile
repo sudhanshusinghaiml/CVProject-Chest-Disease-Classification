@@ -64,7 +64,10 @@ pipeline {
             steps {
                 echo 'Deploying to EC2 instance...'
                 sshagent(['ec2-ssh-key']) {
-                    sh "ssh -o StrictHostKeyChecking=no -l ubuntu 3.86.37.143 'cd /home/ubuntu/ && wget https://github.com/sudhanshusinghaiml/CVProject-Chest-Disease-Classification/blob/develop/docker-compose.yaml && export IMAGE_NAME=$ECR_REPOSITORY:latest && aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com && docker compose up -d '"
+                    sh "ssh -o StrictHostKeyChecking=no -l ubuntu 3.86.37.143 'cd /home/ubuntu/ && wget
+                    https://github.com/sudhanshusinghaiml/CVProject-Chest-Disease-Classification/blob/develop/docker-compose.yaml && export
+                    IMAGE_NAME=$ECR_REPOSITORY:latest && aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin
+                    $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com && docker compose up -d '"
                 }
             }
         }
