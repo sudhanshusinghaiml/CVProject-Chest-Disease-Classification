@@ -81,7 +81,7 @@ pipeline {
                         // Execute remote commands with debugging
                         try {
                             sh """
-                            ssh -v -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ${remoteUser}@${remoteHost} << EOF
+                            ssh -v -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ${remoteUser}@${remoteHost} << 'EOF'
                             set -x
                             cd ${remoteDir}
                             wget ${dockerComposeUrl} -O docker-compose.yml
