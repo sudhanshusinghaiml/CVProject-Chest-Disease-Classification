@@ -17,7 +17,7 @@ services:
       - "8080:8080"
     environment:
       FLASK_ENV: development  # or production
-      FLASK_APP: /app/app.py  # replace with your main Flask app file if different
-    volumes:
-      - .:/app  # Mount the current directory to /app in the container
+      MLFLOW_TRACKING_URI: ${MLFLOW_TRACKING_URI}
+      MLFLOW_TRACKING_USERNAME: ${MLFLOW_TRACKING_USERNAME}
+      MLFLOW_TRACKING_PASSWORD: ${MLFLOW_TRACKING_PASSWORD}
     command: gunicorn app:ChestDiseaseClassificationApp --workers=2 --threads=2 --worker-class=gthread -b 0.0.0.0:8080

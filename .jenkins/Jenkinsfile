@@ -6,6 +6,9 @@ pipeline {
 		AWS_ACCOUNT_ID = credentials('AWS_ACCOUNT_ID')
 		AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
 		AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
+        MLFLOW_TRACKING_URI = credentials('MLFLOW_TRACKING_URI')
+        MLFLOW_TRACKING_USERNAME = credentials('MLFLOW_TRACKING_USERNAME')
+        MLFLOW_TRACKING_PASSWORD = credentials('MLFLOW_TRACKING_PASSWORD')
     }
 
     stages {
@@ -87,6 +90,9 @@ pipeline {
                             wget ${dockerComposeUrl} -O docker-compose.yml
                             export IMAGE_NAME=${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com/${imageName}
                             aws ecr get-login-password --region ${awsRegion} | docker login --username AWS --password-stdin ${ecrUrl}
+                            export MLFLOW_TRACKING_URI = ${MLFLOW_TRACKING_URI}
+                            export MLFLOW_TRACKING_USERNAME = ${MLFLOW_TRACKING_USERNAME}
+                            export MLFLOW_TRACKING_PASSWORD = ${MLFLOW_TRACKING_PASSWORD}
                             docker compose up -d
                             set +x
                             """
