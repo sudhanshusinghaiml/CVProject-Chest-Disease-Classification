@@ -20,4 +20,4 @@ services:
       FLASK_APP: app.py  # replace with your main Flask app file if different
     volumes:
       - .:/app  # Mount the current directory to /app in the container
-    command: gunicorn app:ChestDiseaseClassificationApp --workers=2 --threads=2 --worker-class=gthread
+    command: gunicorn app:ChestDiseaseClassificationApp --workers=2 --threads=2 --worker-class=gthread -b 0.0.0.0:8080

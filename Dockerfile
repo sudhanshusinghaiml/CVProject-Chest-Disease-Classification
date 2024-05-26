@@ -38,4 +38,5 @@ RUN dvc init --no-scm
 EXPOSE 8080
 
 # Run the application.
-CMD ["gunicorn", "app:ChestDiseaseClassificationApp", "--workers", "2", "--threads", "2", "--worker-class", "gthread"]
+# CMD ["gunicorn", "app:ChestDiseaseClassificationApp", "--workers", "2", "--threads", "2", "--worker-class", "gthread"]
+CMD gunicorn app:ChestDiseaseClassificationApp --workers=2 --threads=2 --worker-class=gthread -b 0.0.0.0:8080
