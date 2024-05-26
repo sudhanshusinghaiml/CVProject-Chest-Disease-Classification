@@ -47,7 +47,7 @@ pipeline {
         // stage('Continuous Deployment') {
         //     steps {
         //         echo 'Deploying to EC2 instance...'
-        //         sshagent(['ec2-ssh-key']) {
+        //         sshagent(['ec2_ssh_key']) {
         //             sh 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ubuntu@3.86.37.143'
         //             sh 'cd /home/ubuntu/'
         //             sh 'wget https://github.com/sudhanshusinghaiml/CVProject-Chest-Disease-Classification/blob/develop/docker-compose.yaml'
@@ -60,16 +60,16 @@ pipeline {
 
         stage('Continuous Deployment') {
             steps {
-                sshagent(['ec2-ssh-key']) {
+                sshagent(['ec2_ssh_key']) {
                     script {
                         // Define variables
                         def remoteUser = 'ubuntu'
-                        def remoteHost = 'ec2-3-86-37-143.compute-1.amazonaws.com'
+                        def remoteHost = 'ec2-3-212-155-83.compute-1.amazonaws.com'
                         def remoteDir = '/home/ubuntu/'
                         def dockerComposeUrl = 'https://raw.githubusercontent.com/sudhanshusinghaiml/CVProject-Chest-Disease-Classification/develop/docker-compose.yaml'
                         def imageName = "$ECR_REPOSITORY:latest"
                         def awsRegion = 'us-east-1'
-                        def ecrUrl = "$AWS_ACCOUNT_ID.dkr.ecr.${awsRegion}.amazonaws.com"
+                        def ecrUrl = "${AWS_ACCOUNT_ID}.dkr.ecr.${awsRegion}.amazonaws.com"
 
                         // Debugging: Print variables
                         echo "Connecting to ${remoteUser}@${remoteHost}"
@@ -85,7 +85,7 @@ pipeline {
                             set -x
                             cd ${remoteDir}
                             wget ${dockerComposeUrl} -O docker-compose.yml
-                            export IMAGE_NAME=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/${imageName}
+                            export IMAGE_NAME=${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com/${imageName}
                             aws ecr get-login-password --region ${awsRegion} | docker login --username AWS --password-stdin ${ecrUrl}
                             docker compose up -d
                             set +x
